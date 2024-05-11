@@ -1,18 +1,18 @@
 import pymongo
 import requests
+import creds
 
-client=pymongo.MongoClient("mongodb+srv://rupal:Y8C9rYpDteRo1pIh@cluster0.gaij3uf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+client=pymongo.MongoClient(creds.mongodb_serv)
 db=client.sample_mflix
 collection=db.movies
 
-hf_token = "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"
 embedding_url = "https://api-inference.huggingface.co/pipeline/feature-extraction/sentence-transformers/all-MiniLM-L6-v2"
 
 def generate_embedding(text: str) -> list[float]:
 
   response = requests.post(
     embedding_url,
-    headers={"Authorization": f"Bearer {hf_token}"},
+    headers={"Authorization": f"Bearer {creds.hf_token}"},
     json={"inputs": text})
 
   if response.status_code != 200:
